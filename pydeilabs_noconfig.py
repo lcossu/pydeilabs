@@ -1,34 +1,18 @@
 import os
 import sys
 import requests
-import configparser
 from getpass import getpass
 from bs4 import BeautifulSoup
-
-# Determine the script's directory
-script_dir = os.path.dirname(os.path.realpath(__file__))
 
 # Configuration
 host = "https://deilabs.dei.unipd.it"
 login_page = f"{host}/login"
 lab_in_out_page = f"{host}/laboratory_in_outs"
-config_dir = os.path.join(script_dir, ".config")
-cookies_file = os.path.join(config_dir, "cookies.txt")
-exit_file = os.path.join(config_dir, "exit_url")
-configfile = os.path.join(config_dir, "setup.config")
 
-# Ensure configuration directory exists
-os.makedirs(config_dir, exist_ok=True)
-
-# Load configuration
-config = configparser.ConfigParser()
-if os.path.exists(configfile):
-    config.read(configfile)
-
-
-def save_config(configfile_path):
-    with open(configfile_path, 'w') as file:
-        config.write(file)
+# Global configuration variables
+config_name = ""
+config_lab = ""
+config_psw = ""
 
 
 def get_token(session):
@@ -91,48 +75,25 @@ def enter_lab(session, lab_id):
         sys.exit(1)
 
     soup = BeautifulSoup(response.text, 'html.parser')
-    exit_url = soup.find('form', {'id': 'edit_laboratory_in_outs_form'})['action']
-    with open(exit_file, 'w') as f:
-        f.write(exit_url)
-
-
-def exit_lab(session):
-    if not os.path.exists(exit_file):
-        print("Not logged in from CLI. Aborting")
-        sys.exit(1)
-
-    with open(exit_file, 'r') as f:
-        exit_url = f.read().strip()
-
-    token = get_token(session)
-    payload = {
-        '_token': token,
-        '_method': 'PUT'
-    }
-    response = session.post(exit_url, data=payload)
-    if "OK" in response.text:
-        print("Successfully exited")
-    else:
-        print("Failed exiting. Unexpected error occurred")
-        sys.exit(1)
 
 
 def configure(args):
-    if '-n' in args:
-        config['DEFAULT']['name'] = args[args.index('-n') + 1]
-    if '-l' in args:
-        config['DEFAULT']['lab'] = args[args.index('-l') + 1]
-    if '-p' in args:
-        password = getpass("Enter DEI account password: ")
-        config['DEFAULT']['psw'] = password
-    if '-r' in args:
-        config['DEFAULT'].pop('psw', None)
-        print("Password reset")
+    global config_name, config_lab, config_psw
 
-    save_config(configfile)
+    if '-n' in args:
+        config_name = args[args.index('-n') + 1]
+    if '-l' in args:
+        config_lab = args[args.index('-l') + 1]
+    if '-p' in args:
+        config_psw = getpass("Enter DEI account password: ")
+    if '-r' in args:
+        config_psw = ""
+        print("Password reset")
 
 
 def main():
+    global config_name, config_lab, config_psw
+
     if '-h' in sys.argv or '--help' in sys.argv:
         print("Usage: python3 script.py [configuration] [in|out]")
         print("  Configure:")
@@ -149,26 +110,19 @@ def main():
         configure(sys.argv)
         sys.exit(0)
 
-    email = config['DEFAULT'].get('name', '')
-    lab = config['DEFAULT'].get('lab', '')
-    password = config['DEFAULT'].get('psw', '')
-
-    if not email or not lab:
+    if not config_name or not config_lab:
         print("Configuration incomplete")
         sys.exit(1)
 
-    if not password:
-        password = getpass(f"Password for {email}: ")
+    if not config_psw:
+        config_psw = getpass(f"Password for {config_name}: ")
 
     session = requests.Session()
 
-    if 'in' in sys.argv:
-        do_login(session, email, password)
-        lab_id = find_lab(session, lab)
+    if 'in' in sys.argv or len(sys.argv) == 1:
+        do_login(session, config_name, config_psw)
+        lab_id = find_lab(session, config_lab)
         enter_lab(session, lab_id)
-    elif 'out' in sys.argv:
-        do_login(session, email, password)
-        exit_lab(session)
     else:
         print("Invalid argument")
         sys.exit(1)
