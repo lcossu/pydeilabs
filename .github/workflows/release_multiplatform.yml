@@ -41,7 +41,7 @@ jobs:
         with:
           name: pydeilabs-${{ matrix.os }}
           path: |
-            dist/pydeilabs${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+            dist/pydeilabs-${{matrix.os}}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
 
   release:
     needs: build
