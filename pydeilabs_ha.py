@@ -18,12 +18,9 @@ config_psw = ""
 async def main():
     global config_name, config_lab, config_psw
 
-    if not config_name or not config_lab:
+    if not config_name or not config_lab or not config_psw:
         print("Configuration incomplete")
         return 1
-
-    if not config_psw:
-        config_psw = getpass(f"Password for {config_name}: ")
 
     async with aiohttp.ClientSession() as session:
         # Get the CSRF token for login

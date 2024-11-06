@@ -10,9 +10,9 @@ login_page = f"{host}/login"
 lab_in_out_page = f"{host}/laboratory_in_outs"
 
 # Global configuration variables
-config_name = ""
-config_lab = ""
-config_psw = ""
+config_name = "" # DEI username
+config_lab = "" # DEI Lab name as on deilabs website
+config_psw = "" # DEI user password
 
 
 def get_token(session):
@@ -77,45 +77,20 @@ def enter_lab(session, lab_id):
     soup = BeautifulSoup(response.text, 'html.parser')
 
 
-def configure(args):
-    global config_name, config_lab, config_psw
-
-    if '-n' in args:
-        config_name = args[args.index('-n') + 1]
-    if '-l' in args:
-        config_lab = args[args.index('-l') + 1]
-    if '-p' in args:
-        config_psw = getpass("Enter DEI account password: ")
-    if '-r' in args:
-        config_psw = ""
-        print("Password reset")
-
-
 def main():
     global config_name, config_lab, config_psw
 
     if '-h' in sys.argv or '--help' in sys.argv:
         print("Usage: python3 script.py [configuration] [in|out]")
-        print("  Configure:")
-        print("    -n NAME     Set DEI account name")
-        print("    -l LAB      Set current office name, format e.g.: 330 DEI/A")
-        print("    -p          Set user password (WARNING: saved unencrypted)")
-        print("    -r          Reset password")
+        print("Insert the configuration at the top of the file")
         print("  Register entry/exit:")
         print("    in          Register entry with current configuration")
         print("    out         Register exit with current configuration")
         sys.exit(0)
 
-    if '-n' in sys.argv or '-l' in sys.argv or '-p' in sys.argv or '-r' in sys.argv:
-        configure(sys.argv)
-        sys.exit(0)
-
-    if not config_name or not config_lab:
+    if not config_name or not config_lab or not config_psw:
         print("Configuration incomplete")
         sys.exit(1)
-
-    if not config_psw:
-        config_psw = getpass(f"Password for {config_name}: ")
 
     session = requests.Session()
 

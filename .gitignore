@@ -1,3 +1,5 @@
-/.config/
 /venv/
 /.idea/
+/dist/**/
+/build/**/
+/build/pydeilabs/

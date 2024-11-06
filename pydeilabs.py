@@ -12,7 +12,7 @@ script_dir = os.path.dirname(os.path.realpath(__file__))
 host = "https://deilabs.dei.unipd.it"
 login_page = f"{host}/login"
 lab_in_out_page = f"{host}/laboratory_in_outs"
-config_dir = os.path.join(script_dir, ".config")
+config_dir = os.path.join(script_dir, "config")
 cookies_file = os.path.join(config_dir, "cookies.txt")
 exit_file = os.path.join(config_dir, "exit_url")
 configfile = os.path.join(config_dir, "setup.config")
@@ -21,7 +21,7 @@ configfile = os.path.join(config_dir, "setup.config")
 os.makedirs(config_dir, exist_ok=True)
 
 # Load configuration
-config = configparser.ConfigParser()
+config = configparser.ConfigParser(allow_no_value=True)
 if os.path.exists(configfile):
     config.read(configfile)
 
