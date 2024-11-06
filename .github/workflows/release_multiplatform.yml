@@ -49,8 +49,6 @@ jobs:
     steps:
       - name: Download build artifacts
         uses: actions/download-artifact@v4
-        with:
-          name: pydeilabs-*
 
       - name: Create Release
         uses: actions/create-release@v1
