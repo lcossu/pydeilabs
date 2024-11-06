@@ -32,7 +32,7 @@ jobs:
 
       - name: Build with PyInstaller
         run: |
-          pyinstaller --onefile pydeilabs.py  # Create standalone executable
+          pyinstaller --onefile -i pydeilabs.icns -i pydeilabs.ico pydeilabs.py  # Create standalone executable
         # Adjust options if needed, e.g., add --name, --icon for custom output names or icons
 
       - name: Archive build artifact
@@ -50,7 +50,7 @@ jobs:
       - name: Download build artifacts
         uses: actions/download-artifact@v3
         with:
-          name: pydeilabs-*
+          name: pydeilabs*
 
       - name: Create Release
         uses: actions/create-release@v1
@@ -61,4 +61,4 @@ jobs:
           release_name: Release ${{ github.ref_name }}
           draft: false
           prerelease: false
-          files: pydeilabs-*
+          files: pydeilabs*
