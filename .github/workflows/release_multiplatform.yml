@@ -47,8 +47,23 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Download build artifacts
+      - name: Download Linux artifact
         uses: actions/download-artifact@v4
+        with:
+          name: pydeilabs-ubuntu-latest
+          path: ./artifacts
+
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pydeilabs-windows-latest
+          path: ./artifacts
+
+      - name: Download macOS artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pydeilabs-macos-latest
+          path: ./artifacts
 
       - name: Create Release
         uses: actions/create-release@v1
@@ -59,3 +74,4 @@ jobs:
           release_name: Release ${{ github.ref_name }}
           draft: false
           prerelease: false
+          files: ./artifacts/*
