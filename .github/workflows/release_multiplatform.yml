@@ -38,13 +38,21 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: pyinstaller pydeilabs-mac.spec  # Use the macOS-specific .spec file
 
+      - name: Create DMG for macOS
+        if: matrix.os == 'macos-latest'
+        run: |
+          # Install create-dmg tool
+          brew install create-dmg
+          # Create the .dmg file around the .app
+          create-dmg "dist/pydeilabs.app" "dist/pydeilabs.dmg" --dmg-title="PyDEILabs"
+
       - name: Archive build artifact
         if: success()
         uses: actions/upload-artifact@v4
         with:
           name: pydeilabs-${{ matrix.os }}
           path: |
-            dist/pydeilabs${{ matrix.os == 'windows-latest' && '.exe' || '.app' }}
+            dist/pydeilabs${{ matrix.os == 'windows-latest' && '.exe' || '.dmg' }}
 
   release:
     needs: build
