@@ -44,7 +44,18 @@ jobs:
           # Install create-dmg tool
           brew install create-dmg
           # Create the .dmg file around the .app
-          create-dmg "dist/pydeilabs.app" "dist/pydeilabs.dmg" --dmg-title="PyDEILabs"
+          create-dmg \
+          --volname "PyDeiLabs Installer" \
+          --volicon "deilabs.icns" \
+          --window-pos 200 120 \
+          --window-size 800 400 \
+          --icon-size 100 \
+          --icon "pydeilabs.app" 200 190 \
+          --hide-extension "pydeilabs.app" \
+          --app-drop-link 600 185 \
+          "pydeilabs-macos-latest.dmg" \
+          "dist/pydeilabs.app"
+          mv rw* pydeilabs-macos-latest.dmg
 
       - name: Archive build artifact
         if: success()
