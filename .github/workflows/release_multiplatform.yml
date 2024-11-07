@@ -55,7 +55,6 @@ jobs:
           --app-drop-link 600 185 \
           "pydeilabs-macos-latest.dmg" \
           "dist/pydeilabs.app"
-          mv rw* pydeilabs-macos-latest.dmg
 
       - name: Archive build artifact
         if: success()
