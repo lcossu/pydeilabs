@@ -1,16 +1,11 @@
 # pydeilabs-win.spec
 
-# Importing the required modules from PyInstaller
-from PyInstaller.utils.hooks import collect_data_files
-from PyInstaller.__main__ import Analysis, PYZ, EXE, COLLECT
-
-
 # Define the main script and build parameters
 a = Analysis(
     ['pydeilabs.py'],           # Your main script
     pathex=['.'],                # Paths to search
     binaries=[],
-    datas=[('/config', '/config')],
+    datas=[],
     hiddenimports=[],
     hookspath=[],
     runtime_hooks=[],
@@ -37,8 +32,5 @@ exe = EXE(
     strip=False,
     upx=True,
     console=False,              # Set to True if you want console output
-    icon='pydeilabs.ico'        # Icon file for Windows
+    icon='deilabs.ico'        # Icon file for Windows
 )
-
-# COLLECT creates the single-file output
-coll = COLLECT(exe, a.binaries, a.zipfiles, a.datas, strip=False, upx=True, name='dist')
