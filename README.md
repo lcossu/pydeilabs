@@ -1,9 +1,26 @@
 # PyDEILabs
+![pydeilabs.png](pydeilabs.png)
 
-## Usage
-To use the script chose between the default or noconfig version. 
-The default version uses a configuration file, located in the /config folder to obtain the required parameters to login.
-The noconfig version contains these values at the top of the script.
+## Overview
+**PyDEILabs** is a simple application for authenticating and automatically checking in to a lab on the **deilabs** site. It allows you to save login credentials and lab name, making the login and lab check-in process fast and repeatable.
 
-Fill these values with your information and launch the script from the terminal with the "in" parameter.
-If everything works you will see the "Successfully entered lab" message.
+## How to Use
+
+### Pre-Built Application
+1. Download the correct executable from the latest release for your OS.
+2. Launch the application: a simple form will be displayed.
+3. Enter your username, password, and lab name. **Note:** The lab name must match exactly with the name on the deilabs website.
+4. Click "Save" to save the configuration. This will automatically attempt to log in and check in to the lab.
+5. On subsequent runs, the app will use the saved credentials to log in and check in to the lab automatically.
+
+### Running the Python Script Manually
+If you prefer to run the Python script manually:
+- Choose between the default version (with GUI) and the noconfig version.
+  - **Default (with GUI)**: launches the application as described in the pre-built version.
+  - **Noconfig**: enter the required information directly at the top of the script.
+
+## Configuration File Location
+The configuration file is saved to a system-specific directory to ensure data persistence:
+
+- **Windows**: `AppData\Roaming\pydeilabs`
+- **MacOS**: `~/Library/Application Support/pydeilabs`
