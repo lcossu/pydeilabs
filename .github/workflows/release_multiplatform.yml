@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [windows-latest, macos-latest]  # Exclude Linux by omitting it from the matrix
 
     steps:
       - name: Checkout code
@@ -20,7 +20,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: '3.12'
 
       - name: Install Dependencies
         run: |
@@ -30,10 +30,13 @@ jobs:
       - name: Install PyInstaller
         run: pip install pyinstaller
 
-      - name: Build with PyInstaller
-        run: |
-          pyinstaller --onefile --name pydeilabs-${{matrix.os}} pydeilabs.py  # Create standalone executable
-        # Adjust options if needed, e.g., add --name, --icon for custom output names or icons
+      - name: Build with PyInstaller for Windows
+        if: matrix.os == 'windows-latest'
+        run: pyinstaller --onefile pydeilabs-win.spec  # Use the Windows-specific .spec file
+
+      - name: Build with PyInstaller for macOS
+        if: matrix.os == 'macos-latest'
+        run: pyinstaller pydeilabs-mac.spec  # Use the macOS-specific .spec file
 
       - name: Archive build artifact
         if: success()
@@ -41,18 +44,12 @@ jobs:
         with:
           name: pydeilabs-${{ matrix.os }}
           path: |
-            dist/pydeilabs-${{matrix.os}}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+            dist/pydeilabs${{ matrix.os == 'windows-latest' && '.exe' || '' }}
 
   release:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Download Linux artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: pydeilabs-ubuntu-latest
-          path: ./artifacts
-
       - name: Download Windows artifact
         uses: actions/download-artifact@v4
         with:
