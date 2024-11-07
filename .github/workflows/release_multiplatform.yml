@@ -32,7 +32,7 @@ jobs:
 
       - name: Build with PyInstaller for Windows
         if: matrix.os == 'windows-latest'
-        run: pyinstaller --onefile pydeilabs-win.spec  # Use the Windows-specific .spec file
+        run: pyinstaller pydeilabs-win.spec  # Use the Windows-specific .spec file
 
       - name: Build with PyInstaller for macOS
         if: matrix.os == 'macos-latest'
