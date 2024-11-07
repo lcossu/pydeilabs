@@ -53,7 +53,7 @@ jobs:
           --icon "pydeilabs.app" 200 190 \
           --hide-extension "pydeilabs.app" \
           --app-drop-link 600 185 \
-          "pydeilabs.dmg" \
+          "dist/pydeilabs.dmg" \
           "dist/pydeilabs.app"
 
       - name: Archive build artifact
