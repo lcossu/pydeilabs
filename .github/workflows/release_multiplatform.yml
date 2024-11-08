@@ -75,19 +75,19 @@ jobs:
       - name: Download Windows artifact
         uses: actions/download-artifact@v4
         with:
-          name: pydeilabs-windows-${{ github.ref_name }}
+          name: pydeilabs-Windows-${{ github.ref_name }}
           path: ./artifacts
 
       - name: Download macOS artifact
         uses: actions/download-artifact@v4
         with:
-          name: pydeilabs-macos-${{ github.ref_name }}
+          name: pydeilabs-macOS-${{ github.ref_name }}
           path: ./artifacts
 
       - name: Download Linux artifact
         uses: actions/download-artifact@v4
         with:
-          name: pydeilabs-linux-${{ github.ref_name }}
+          name: pydeilabs-Linux-${{ github.ref_name }}
           path: ./artifacts
 
       - name: Create Release
