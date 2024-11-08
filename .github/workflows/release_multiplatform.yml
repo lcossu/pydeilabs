@@ -64,7 +64,7 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: pydeilabs-${{ runner.os | toLower }}-${{ github.ref_name }}
+          name: pydeilabs-${{ runner.os,, }}-${{ github.ref_name }}
           path: |
             dist/pydeilabs*
 
