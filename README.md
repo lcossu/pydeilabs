@@ -12,6 +12,8 @@
 3. Enter your username, password, and lab name. **Note:** The lab name must match exactly with the name on the deilabs website.
 4. Click "Save" to save the configuration. This will automatically attempt to log in and check in to the lab.
 5. On subsequent runs, the app will use the saved credentials to log in and check in to the lab automatically.
+6. Add the application to your startup applications, so it runs on system boot.
+7. Profit!
 
 ### Running the Python Script Manually
 If you prefer to run the Python script manually:
@@ -24,3 +26,5 @@ The configuration file is saved to a system-specific directory to ensure data pe
 
 - **Windows**: `AppData\Roaming\pydeilabs`
 - **MacOS**: `~/Library/Application Support/pydeilabs`
+
+Note that the password is currently saved without encryption.
